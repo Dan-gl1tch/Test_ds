@@ -3,65 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minecraft Skins Discord</title>
+    <title>Minecraft Skins Project</title>
     <style>
         body {
             margin: 0;
-            background: #111111;
-            color: white;
-            font-family: sans-serif;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            font-family: 'Segoe UI', sans-serif;
+            color: white;
         }
-        .server-card {
+        @keyframes gradient { 0% {background-position: 0% 50%;} 50% {background-position: 100% 50%;} 100% {background-position: 0% 50%;} }
+        
+        .card {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 40px;
+            border-radius: 25px;
             text-align: center;
-            background: #18191c;
-            padding: 30px;
-            border-radius: 15px;
-            border: 1px solid #333;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            width: 350px;
         }
-        .banner {
+
+        .status-dot { height: 10px; width: 10px; background-color: #bbb; border-radius: 50%; display: inline-block; margin-right: 5px; }
+        .online { background-color: #43b581; }
+
+        .btn {
             display: block;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            transition: 0.3s;
-            max-width: 100%;
-        }
-        .banner:hover {
-            transform: scale(1.02);
-            filter: brightness(1.2);
-        }
-        .btn-join {
-            display: inline-block;
+            margin-top: 20px;
+            padding: 15px;
             background: #5865F2;
             color: white;
             text-decoration: none;
-            padding: 12px 25px;
-            border-radius: 5px;
+            border-radius: 10px;
             font-weight: bold;
-            transition: 0.2s;
+            transition: 0.3s;
         }
-        .btn-join:hover {
-            background: #4752c4;
-        }
+        .btn:hover { background: #4752c4; transform: scale(1.02); }
     </style>
 </head>
 <body>
 
-    <div class="server-card">
-        <h2>Наш статус в Discord 🚀</h2>
-        
-        <!-- Живой баннер сервера (обновляется сам) -->
-        <a href="https://discord.gg" target="_blank">
-            <img class="banner" src="https://discord.com" alt="Discord Status">
-        </a>
+<div class="card">
+    <h2 id="serverName">Загрузка...</h2>
+    <p><span id="dot" class="status-dot"></span> В сети: <span id="onlineCount">0</span></p>
+    
+    <!-- Вместо глючного фрейма - красивая живая картинка -->
+    <img src="https://discord.com" alt="Discord Status" style="width: 100%; border-radius: 10px; margin: 15px 0;">
 
-        <p>Заходи к нам, чтобы обсудить скины!</p>
-        <a href="https://discord.gg" class="btn-join" target="_blank">ПРИСОЕДИНИТЬСЯ</a>
-    </div>
+    <a href="https://discord.gg" class="btn">Присоединиться к Discord</a>
+</div>
+
+<script>
+    // Скрипт сам берет данные из твоего работающего JSON
+    fetch('https://discord.com')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('serverName').innerText = data.name;
+            document.getElementById('onlineCount').innerText = data.presence_count;
+            document.getElementById('dot').classList.add('online');
+        })
+        .catch(err => {
+            document.getElementById('serverName').innerText = "Сервер в сети";
+        });
+</script>
 
 </body>
 </html>
